@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GRAMSCHMIDT_H
 #define GRAMSCHMIDT_H
 
