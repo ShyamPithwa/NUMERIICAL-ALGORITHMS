@@ -5,10 +5,20 @@ using namespace std;
 
 int main()
 {
-    Matrix A(2, 2, 0);
+    int r,c;
+    cout<<"ENTER NUMBER OF ROWS: \n"<<flush;
+    cin>>r;
+    cout<<"ENTER NUMBER OF COLOUNMS:\n"<<flush;
+    cin>>c;
+    Matrix A(r, c, 0);
     A.input();
     Matrix B = MG_Schmidt(A);
+    cout<<"ORIGINAL MATRIX:\n";
+    A.print();
+    cout<<"SET OF ORTHOGONAL VECTORS Q\n"<<flush;
     B.print();
-    cout<<"SET OF ORTHOGONAL VECTORS"<<endl;
+    Matrix I =B.transpose()*B;
+    cout<<"QxQ(transpose)"<<endl;
+    I.print();
     return 0;
 }
