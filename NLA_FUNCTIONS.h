@@ -5,6 +5,7 @@
 #include "matrix.h"
 
 Matrix MG_Schmidt(Matrix &A);
+Matrix Sub_Matrix(const Matrix &A, int i1, int i2, int j3, int j4);
 
 double tnorm(std::vector<double>& a);
 double tnorm(Matrix &A, int k);
