@@ -44,13 +44,15 @@ vector<double> access_colunm(Matrix &A, int k)
 }
 
 // For Multiplication of scalar to whole vector
-vector<double> VS_Multiplication(const vector<double>& v, double k){
-    int n = v.size();
-    vector<double> result(n); // Create a clean new vector
-    for(int i = 0; i < n; i++){
-        result[i] = v[i] * k;
-    }
-    return result; // Return the new vector, leaving 'v' untouched!
+vector<double> VS_Multiplication(const vector<double> &v, double k)
+{
+  int n = v.size();
+  vector<double> result(n); // Create a clean new vector
+  for (int i = 0; i < n; i++)
+  {
+    result[i] = v[i] * k;
+  }
+  return result; // Return the new vector, leaving 'v' untouched!
 }
 
 // Dot/inner product
@@ -117,21 +119,45 @@ Matrix MG_Schmidt(Matrix &A)
   {
     vector<double> v = access_colunm(V, i);
     double r = tnorm(v);
-    if(r!=0){
-    vector<double> q = VS_Multiplication(v, 1.0 / r);
-    set_column(V, i, q);
-    for (int j = i + 1; j < m; j++)
+    if (r != 0)
     {
-      vector<double> vj = access_colunm(V, j);
-      double z = Dot_product(q, vj);
-      vector<double> proj = VS_Multiplication(q, z);
-      vj = Vec_Sub(vj, proj);
-      set_column(V, j, vj);
+      vector<double> q = VS_Multiplication(v, 1.0 / r);
+      set_column(V, i, q);
+      for (int j = i + 1; j < m; j++)
+      {
+        vector<double> vj = access_colunm(V, j);
+        double z = Dot_product(q, vj);
+        vector<double> proj = VS_Multiplication(q, z);
+        vj = Vec_Sub(vj, proj);
+        set_column(V, j, vj);
+      }
     }
-   }
-   else{
-    cout<<"NOT POSSIBLE"<<endl;
-   }
+    else
+    {
+      cout << "NOT POSSIBLE" << endl;
+    }
   }
   return V;
+}
+
+// Sub matrix function
+Matrix Sub_Matrix(const Matrix &A, int i1, int i2, int j3, int j4)
+{
+  int r = 0, k = 0;
+  Matrix c(i2 - i1 + 1, j4 - j3 + 1, 0);
+  if (i1 < 1 || i2 > A.getRows() || j3 < 1 || j4 > A.getCols() || i1 > i2 || j3 > j4)
+  {
+    for (int i = i1 - 1, r = 0; i < i2; i++, r++)
+    {
+      for (int j = j3 - 1, ccol = 0; j < j4; j++, ccol++)
+      {
+        c(r, ccol) = A(i, j);
+      }
+    }
+  }
+  else
+  {
+    throw invalid_argument("ENTER CORRECT VALUES TO OBTAIN SUBMATRIX!!!");
+  }
+  return c;
 }
