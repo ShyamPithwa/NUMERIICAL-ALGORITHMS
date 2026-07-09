@@ -6,7 +6,7 @@
 using namespace std;
 
 // 2-NORM
-double tnorm(vector<double> &a)
+double tnorm(const vector<double> &a)
 {
   double n = a.size();
   double norm, s = 0.0;
@@ -19,7 +19,7 @@ double tnorm(vector<double> &a)
 }
 
 // 2 norm for Matrix colunm
-double tnorm(Matrix &A, int k)
+double tnorm(const Matrix &A, int k)
 {
   int n = A.getCols();
   double norm, s = 0.0;
@@ -32,7 +32,7 @@ double tnorm(Matrix &A, int k)
 }
 
 // Function to access colunm
-vector<double> access_colunm(Matrix &A, int k)
+vector<double> access_colunm(const Matrix &A, int k)
 {
   int c = A.getRows();
   vector<double> colunm(c);
@@ -41,6 +41,19 @@ vector<double> access_colunm(Matrix &A, int k)
     colunm[i] = A(i, k);
   }
   return colunm;
+}
+
+vector<double> VM_Innerproduct(const vector<double>& v,const Matrix& A)
+
+// For Multiplication of vector with matrix
+vector<double> VM_Multiplication(const vector<double>& v,const Matrix& A){
+  if(A.getCols()==v.size()){
+       for(int i =0;i<A.getRows(),i++){
+        for(int j=0;j<A.getCols();j++){
+             
+        }
+       }
+  }
 }
 
 // For Multiplication of scalar to whole vector
@@ -56,7 +69,7 @@ vector<double> VS_Multiplication(const vector<double> &v, double k)
 }
 
 // Dot/inner product
-double Dot_product(vector<double> Q, vector<double> P)
+double Dot_product(const vector<double> Q, const vector<double> P)
 {
 
   if (Q.size() == P.size())
@@ -78,7 +91,7 @@ double Dot_product(vector<double> Q, vector<double> P)
 }
 
 // Vector Subtraction
-vector<double> Vec_Sub(vector<double> A, vector<double> B)
+vector<double> Vec_Sub(const vector<double> A, const vector<double> B)
 {
   if (A.size() == B.size())
   {
@@ -92,6 +105,24 @@ vector<double> Vec_Sub(vector<double> A, vector<double> B)
   }
   else
     return {};
+}
+
+// Vector addition
+vector<double> Vec_Add(const vector<double> &A, const vector<double> &B)
+{
+  if (A.size() == B.size())
+  {
+    vector<double> C(A.size());
+    for (int i = 0; i < A.size(); i++)
+    {
+      C[i] = A[i] + B[i];
+    }
+  }
+
+  else
+  {
+    throw invalid_argument("VECTORS ARE OF DIFRENT DIMENSIONS!!!");
+  }
 }
 
 // To update colunms
@@ -110,7 +141,7 @@ void set_column(Matrix &A, int k, const vector<double> &col)
 }
 
 // Modified Gram schmidt
-Matrix MG_Schmidt(Matrix &A)
+Matrix MG_Schmidt(const Matrix &A)
 {
   int m = A.getCols();
   int n = A.getRows();

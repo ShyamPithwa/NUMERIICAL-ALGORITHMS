@@ -7,14 +7,18 @@
 Matrix MG_Schmidt(Matrix &A);
 Matrix Sub_Matrix(const Matrix &A, int i1, int i2, int j3, int j4);
 
-double tnorm(std::vector<double>& a);
+double tnorm(const vector<double>& a);
 double tnorm(Matrix &A, int k);
 
-std::vector<double> access_colunm(const Matrix &A, int k);
-void set_column(Matrix &A, int k, const std::vector<double>& col);
+vector<double> access_colunm(const Matrix &A, int k);
+void set_column(const Matrix &A, int k, const vector<double>& col);
 
-std::vector<double> VS_Multiplication(std::vector<double>& v, double k);
-double Dot_product(std::vector<double> Q, std::vector<double> P);
-std::vector<double> Vec_Sub(std::vector<double> A, std::vector<double> B);
+vector<double> VS_Multiplication(const vector<double>& v, double k);
+double Dot_product(const vector<double>& Q,const vector<double>& P);
+vector<double> VM_multiplication(const vector<double>& v,const Matrix& A);
+
+
+vector<double> Vec_Sub(const vector<double>& A,const vector<double>& B);
+vector<double> Vec_Add(const vector<double>& A,const vector<double>& B);
 
 #endif
