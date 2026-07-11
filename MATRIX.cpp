@@ -158,7 +158,7 @@ Matrix Matrix::operator*(Matrix &B)
     }
     else
     {
-        return "Error";
+        throw invalid_argument("Dimension mismatch");
     }
 }
 
@@ -222,22 +222,16 @@ Matrix Matrix::operator/(double scalar)
     return result;
 }
 
-// Returns value of given location when asked in the form A(x,y)
-
-double& Matrix::operator()(const unsigned& rowNo,
-                           const unsigned& colNo)
-{
-    return m_matrix[rowNo][colNo];
-}
-
-const double& Matrix::operator()(const unsigned& rowNo,
-                                 const unsigned& colNo) const
-{
-    return m_matrix[rowNo][colNo];
-}
+// Returns a mutable element when asked in the form A(x,y)
 double &Matrix::operator()(const unsigned &rowNo, const unsigned &colNo)
 {
-    return this->m_matrix[rowNo][colNo];
+    return m_matrix[rowNo][colNo];
+}
+
+// Returns a read-only element for const matrices.
+const double &Matrix::operator()(const unsigned &rowNo, const unsigned &colNo) const
+{
+    return m_matrix[rowNo][colNo];
 }
 
 // No brainer - returns row #

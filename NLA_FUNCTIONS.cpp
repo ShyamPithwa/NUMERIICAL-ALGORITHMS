@@ -43,17 +43,48 @@ vector<double> access_colunm(const Matrix &A, int k)
   return colunm;
 }
 
-vector<double> VM_Innerproduct(const vector<double>& v,const Matrix& A)
+// vector matrix outerproduct
+Matrix OuterProduct(const vector<double> &v, const Matrix &row)
+{
+  // row must be a 1 × n matrix
+  if (row.getRows() != 1)
+  {
+    throw invalid_argument("Second argument must be a row vector.");
+  }
+
+  Matrix result(v.size(), row.getCols(), 0.0);
+
+  for (unsigned i = 0; i < v.size(); i++)
+  {
+    for (unsigned j = 0; j < row.getCols(); j++)
+    {
+      result(i, j) = v[i] * row(0, j);
+    }
+  }
+
+  return result;
+}
 
 // For Multiplication of vector with matrix
-vector<double> VM_Multiplication(const vector<double>& v,const Matrix& A){
-  if(A.getCols()==v.size()){
-       for(int i =0;i<A.getRows(),i++){
-        for(int j=0;j<A.getCols();j++){
-             
-        }
-       }
+Matrix VM_multiplication(const vector<double> &v, const Matrix &A)
+{
+  if (v.size() != A.getRows())
+    throw invalid_argument("Dimension mismatch.");
+
+  Matrix result(1, A.getCols(), 0.0);
+  for (int j = 0; j < A.getCols(); j++)
+  {
+    double sum = 0.0;
+
+    for (int i = 0; i < A.getRows(); i++)
+    {
+      sum += v[i] * A(i, j);
+    }
+
+    result(0, j) = sum;
   }
+
+  return result;
 }
 
 // For Multiplication of scalar to whole vector
@@ -117,6 +148,7 @@ vector<double> Vec_Add(const vector<double> &A, const vector<double> &B)
     {
       C[i] = A[i] + B[i];
     }
+    return C;
   }
 
   else
@@ -174,21 +206,37 @@ Matrix MG_Schmidt(const Matrix &A)
 // Sub matrix function
 Matrix Sub_Matrix(const Matrix &A, int i1, int i2, int j3, int j4)
 {
-  int r = 0, k = 0;
-  Matrix c(i2 - i1 + 1, j4 - j3 + 1, 0);
-  if (i1 < 1 || i2 > A.getRows() || j3 < 1 || j4 > A.getCols() || i1 > i2 || j3 > j4)
-  {
-    for (int i = i1 - 1, r = 0; i < i2; i++, r++)
-    {
-      for (int j = j3 - 1, ccol = 0; j < j4; j++, ccol++)
-      {
-        c(r, ccol) = A(i, j);
-      }
-    }
-  }
-  else
+  if (i1 < 0 || i2 >= static_cast<int>(A.getRows()) ||
+      j3 < 0 || j4 >= static_cast<int>(A.getCols()) ||
+      i1 > i2 || j3 > j4)
   {
     throw invalid_argument("ENTER CORRECT VALUES TO OBTAIN SUBMATRIX!!!");
   }
+
+  Matrix c(i2 - i1 + 1, j4 - j3 + 1, 0.0);
+  for (int i = i1, r = 0; i <= i2; i++, r++)
+  {
+    for (int j = j3, ccol = 0; j <= j4; j++, ccol++)
+    {
+      c(r, ccol) = A(i, j);
+    }
+  }
   return c;
+}
+
+void InsertSubMatrix(Matrix &A, const Matrix &sub, unsigned startRow, unsigned startCol)
+{
+  if (startRow + sub.getRows() > A.getRows() ||
+      startCol + sub.getCols() > A.getCols())
+  {
+    throw invalid_argument("Submatrix exceeds matrix dimensions.");
+  }
+
+  for (unsigned i = 0; i < sub.getRows(); i++)
+  {
+    for (unsigned j = 0; j < sub.getCols(); j++)
+    {
+      A(startRow + i, startCol + j) = sub(i, j);
+    }
+  }
 }
