@@ -260,6 +260,52 @@ Matrix Matrix::transpose()
     return Transpose;
 }
 
+//Setting proper width for each entry
+void Matrix::prettyPrint(int precision, double eps) const
+{
+    std::cout << "Matrix:\n";
+
+    int width = precision + 7;
+    // 7 = sign + decimal point + up to 5 digits before decimal
+
+    for (unsigned i = 0; i < m_rowSize; i++)
+    {
+        for (unsigned j = 0; j < m_colSize; j++)
+        {
+            double value = m_matrix[i][j];
+
+            if (std::abs(value) < eps)
+                value = 0.0;
+
+            std::cout << "["
+                      << std::setw(width)
+                      << std::fixed
+                      << std::setprecision(precision)
+                      << value
+                      << "]";
+        }
+
+        std::cout << '\n';
+    }
+}
+
+//Approximating values of matrix
+Matrix Matrix::clean(double eps) const
+{
+    Matrix result(*this);
+
+    for (unsigned i = 0; i < m_rowSize; i++)
+    {
+        for (unsigned j = 0; j < m_colSize; j++)
+        {
+            if (std::abs(result(i, j)) < eps)
+                result(i, j) = 0.0;
+        }
+    }
+
+    return result;
+}
+
 // Prints the matrix beautifully
 void Matrix::print() const
 {

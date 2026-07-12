@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <tuple>
+#include<iomanip>
 #include <cmath>
 
 using std::tuple;
@@ -44,7 +45,11 @@ public:
     // Aesthetic Methods
     double &operator()(const unsigned &rowNo, const unsigned &colNo);
     const double &operator()(const unsigned &rowNo, const unsigned &colNo) const;
+
     void print() const;
+    Matrix clean(double eps = 1e-12) const;
+    void prettyPrint(int precision = 6, double eps = 1e-12) const;
+
     unsigned getRows() const;
     unsigned getCols() const;
 
